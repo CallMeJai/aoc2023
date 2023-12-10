@@ -8,7 +8,18 @@ fn main() {
         // Consumes the iterator, returns an (Optional) String
         let mut sum: i32 = 0;
         for line in lines {
-            if let Ok(input) = line {
+            
+            if let Ok(inp) = line {
+                let input = inp.replace("zero", "z0o")
+                    .replace("one", "o1e")
+                    .replace("two", "t2o")
+                    .replace("three", "t3e")
+                    .replace("four", "f4r")
+                    .replace("five", "f5e")
+                    .replace("six", "s6x")
+                    .replace("seven", "s7n")
+                    .replace("eight", "e8t")
+                    .replace("nine", "n9e");
                 let mut first: i32 = -1;
                 let mut last: i32 = -1;
                 for c in input.chars() {
