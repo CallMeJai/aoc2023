@@ -13,7 +13,7 @@ fn part1(input: &str) -> usize {
 #[test]
 fn test_part1() {
     let input = include_str!("../rsrc/test.txt");
-    assert_eq!(part1(input), 0);
+    assert_eq!(part1(input), 4361);
 }
 
 fn part2(input: &str) -> usize {
