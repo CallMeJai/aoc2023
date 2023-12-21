@@ -158,35 +158,27 @@ fn part1(input: &str) -> usize {
         for x in 0..engine[0].len() {
             if is_symbol(&engine[y][x]) {
                 if let Some(c) = traverse(Direction::Left, (y, x), &engine) && is_number(c) {
-                    println!("valid part number found to the left of ({}, {})", y, x);
                     part_numbers.insert(get_num((&y, &(x - 1)), &engine));
                 }
                 if let Some(c) = traverse(Direction::Right, (y, x), &engine) && is_number(c) {
-                    println!("valid part number found to the right of ({}, {})", y, x);
                     part_numbers.insert(get_num((&y, &(x + 1)), &engine));
                 }
                 if let Some(c) = traverse(Direction::Up, (y, x), &engine) && is_number(c) {
-                    println!("valid part number found to the top of ({}, {})", y, x);
                     part_numbers.insert(get_num((&(y - 1), &x), &engine));
                 }
                 if let Some(c) = traverse(Direction::Down, (y, x), &engine) && is_number(c) {
-                    println!("valid part number found to the bottom of ({}, {})", y, x);
                     part_numbers.insert(get_num((&(y + 1), &x), &engine));
                 }
                 if let Some(c) = traverse(Direction::UpLeft, (y, x), &engine) && is_number(c) {
-                    println!("valid part number found to the top-left of ({}, {})", y, x);
                     part_numbers.insert(get_num((&(y - 1), &(x - 1)), &engine));
                 }
                 if let Some(c) = traverse(Direction::UpRight, (y, x), &engine) && is_number(c) {
-                    println!("valid part number found to the top-right of ({}, {})", y, x);
                     part_numbers.insert(get_num((&(y - 1), &(x + 1)), &engine));
                 }
                 if let Some(c) = traverse(Direction::DownLeft, (y, x), &engine) && is_number(c) {
-                    println!("valid part number found to the bottom-left of ({}, {})", y, x);
                     part_numbers.insert(get_num((&(y + 1), &(x - 1)), &engine));
                 }
                 if let Some(c) = traverse(Direction::DownRight, (y, x), &engine) && is_number(c) {
-                    println!("valid part number found to the bottom-right of ({}, {})", y, x);
                     part_numbers.insert(get_num((&(y + 1), &(x + 1)), &engine));
                 }
             }
