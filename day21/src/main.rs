@@ -1,4 +1,14 @@
 // thanks to benjamin from uci rust club for this solution template
+/*
+ * turn S to O
+ * iter 1:
+ * turn . adjacent to O to X
+ * turn adjacent Os to X
+ * turn remaining Os to .
+ * turn X to O
+ * next iter
+ * after iter 64, count O
+ */
 fn main() {
     let input = include_str!("../rsrc/input.txt");
     println!("Answer to part 1: {}", part1(input));
