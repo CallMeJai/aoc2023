@@ -194,13 +194,26 @@ fn test_part1() {
     assert_eq!(part1(input), 4361);
 }
 
-fn part2(input: &str) -> usize {
+fn get_gear_ratio(pos: (usize, usize), engine: &Vec<Vec<char>>) -> usize {
     0
+}
+
+fn part2(input: &str) -> usize {
+    let engine: Vec<Vec<char>> = string_slice_to_2d_array(input);
+    let mut sum = 0;
+    for y in 0..engine.len() {
+        for x in 0..engine[0].len() {
+            if engine[y][x] == '*' {
+                sum += get_gear_ratio((y, x), &engine);
+            }
+        }
+    }
+    sum
 }
 
 #[cfg(test)]
 #[test]
 fn test_part2() {
     let input = include_str!("../rsrc/test.txt");
-    assert_eq!(part2(input), 0);
+    assert_eq!(part2(input), 467835);
 }
