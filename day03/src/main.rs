@@ -18,7 +18,7 @@ struct Num {
 impl Display for Num {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), Error> {
         if !self.validity {
-            write!(f, "in");
+            write!(f, "in").unwrap();
         }
         write!(f, "valid part number: {} starting at ({}, {})", self.value, self.start.1, self.start.0)
     }
@@ -133,17 +133,14 @@ fn check_down_right(pos: (usize, usize), engine: &Vec<Vec<char>>) -> Option<&cha
 }
 
 fn get_num(pos: (&usize, &usize), engine: &Vec<Vec<char>>) -> Num {
-    println!("called at pos: {:?}", pos);
-    let mut num: Num = Num {value: engine[*pos.0][*pos.1].to_digit(10).expect(&format!("{} at position ({}, {}) is not a number", engine[*pos.0][*pos.1], *pos.0, *pos.1)) as usize, digit_count: 1, validity: false, start: (*pos.0, *pos.1)};
+    let mut num: Num = Num {value: engine[*pos.0][*pos.1].to_digit(10).unwrap() as usize, digit_count: 1, validity: false, start: (*pos.0, *pos.1)};
     while let Some(c) = traverse(Direction::Left, num.start, engine)
         && is_number(c) {
-            println!("number {} to the left of {:?}!", c, num.start);
             num.start.1 -= 1;
             num.value = c.to_digit(10).unwrap() as usize;
     }
     while let Some(c) = traverse(Direction::Right, (num.start.0, num.start.1 + num.digit_count - 1), engine)
         && is_number(c) {
-            println!("number {} to the right of ({}, {})!", c, num.start.0, num.start.1 + num.digit_count - 1);
             num.value *= 10;
             num.value += c.to_digit(10).unwrap() as usize;
             num.digit_count += 1;
