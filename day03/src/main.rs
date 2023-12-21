@@ -195,7 +195,36 @@ fn test_part1() {
 }
 
 fn get_gear_ratio(pos: (usize, usize), engine: &Vec<Vec<char>>) -> usize {
-    0
+    let mut part_numbers: HashSet<Num> = Default::default();
+    if let Some(c) = traverse(Direction::Left, pos, &engine) && is_number(c) {
+        part_numbers.insert(get_num((&pos.0, &(pos.1 - 1)), &engine));
+    }
+    if let Some(c) = traverse(Direction::Right, pos, &engine) && is_number(c) {
+        part_numbers.insert(get_num((&pos.0, &(pos.1 + 1)), &engine));
+    }
+    if let Some(c) = traverse(Direction::Up, pos, &engine) && is_number(c) {
+        part_numbers.insert(get_num((&(pos.0 - 1), &pos.1), &engine));
+    }
+    if let Some(c) = traverse(Direction::Down, pos, &engine) && is_number(c) {
+        part_numbers.insert(get_num((&(pos.0 + 1), &pos.1), &engine));
+    }
+    if let Some(c) = traverse(Direction::UpLeft, pos, &engine) && is_number(c) {
+        part_numbers.insert(get_num((&(pos.0 - 1), &(pos.1 - 1)), &engine));
+    }
+    if let Some(c) = traverse(Direction::UpRight, pos, &engine) && is_number(c) {
+        part_numbers.insert(get_num((&(pos.0 - 1), &(pos.1 + 1)), &engine));
+    }
+    if let Some(c) = traverse(Direction::DownLeft, pos, &engine) && is_number(c) {
+        part_numbers.insert(get_num((&(pos.0 + 1), &(pos.1 - 1)), &engine));
+    }
+    if let Some(c) = traverse(Direction::DownRight, pos, &engine) && is_number(c) {
+        part_numbers.insert(get_num((&(pos.0 + 1), &(pos.1 + 1)), &engine));
+    }
+    if part_numbers.len() != 2 {
+        0
+    } else {
+        part_numbers.iter().map(|x| x.value).product()
+    }
 }
 
 fn part2(input: &str) -> usize {
