@@ -49,6 +49,10 @@ enum Direction {
     Right,
     Up,
     Down,
+    UpLeft,
+    UpRight,
+    DownLeft,
+    DownRight,
 }
 
 fn traverse(dir: Direction, pos: (usize, usize), engine: &Vec<Vec<char>>) -> Option<&char>{
@@ -57,7 +61,10 @@ fn traverse(dir: Direction, pos: (usize, usize), engine: &Vec<Vec<char>>) -> Opt
         Direction::Right => check_right(pos, engine),
         Direction::Up => check_up(pos, engine),
         Direction::Down => check_down(pos, engine),
-
+        Direction::UpLeft => check_up_left(pos, engine),
+        Direction::UpRight => check_up_right(pos, engine),
+        Direction::DownLeft => check_down_left(pos, engine),
+        Direction::DownRight => check_down_right(pos, engine),
     }
 }
 
@@ -93,6 +100,38 @@ fn check_down(pos: (usize, usize), engine: &Vec<Vec<char>>) -> Option<&char> {
     }
 }
 
+fn check_up_left(pos: (usize, usize), engine: &Vec<Vec<char>>) -> Option<&char> {
+    if pos.0 == 0 || pos.1 == 0 {
+        None
+    } else {
+        Some(&engine[pos.0 - 1][pos.1 - 1])
+    }
+}
+
+fn check_up_right(pos: (usize, usize), engine: &Vec<Vec<char>>) -> Option<&char> {
+    if pos.0 == 0 || pos.1 >= engine[0].len() - 1 {
+        None
+    } else {
+        Some(&engine[pos.0 - 1][pos.1 + 1])
+    }
+}
+
+fn check_down_left(pos: (usize, usize), engine: &Vec<Vec<char>>) -> Option<&char> {
+    if pos.0 == engine.len() - 1 || pos.1 == 0 {
+        None
+    } else {
+        Some(&engine[pos.0 + 1][pos.1 - 1])
+    }
+}
+
+fn check_down_right(pos: (usize, usize), engine: &Vec<Vec<char>>) -> Option<&char> {
+    if pos.0 >= engine.len() - 1 || pos.1 >= engine[0].len() - 1 {
+        None
+    } else {
+        Some(&engine[pos.0 + 1][pos.1 + 1])
+    }
+}
+
 fn get_num(pos: (&usize, &usize), engine: &Vec<Vec<char>>) -> Num {
     println!("called at pos: {:?}", pos);
     let mut num: Num = Num {value: engine[*pos.0][*pos.1].to_digit(10).expect(&format!("{} at position ({}, {}) is not a number", engine[*pos.0][*pos.1], *pos.0, *pos.1)) as usize, digit_count: 1, validity: false, start: (*pos.0, *pos.1)};
@@ -120,7 +159,7 @@ fn part1(input: &str) -> usize {
             if is_symbol(&engine[y][x]) {
                 if let Some(c) = traverse(Direction::Left, (y, x), &engine) && is_number(c) {
                     println!("valid part number found to the left of ({}, {})", y, x);
-                    if part_numbers.insert(get_num((&y, &(x - 1)), &engine));
+                    part_numbers.insert(get_num((&y, &(x - 1)), &engine));
                 }
                 if let Some(c) = traverse(Direction::Right, (y, x), &engine) && is_number(c) {
                     println!("valid part number found to the right of ({}, {})", y, x);
@@ -133,6 +172,22 @@ fn part1(input: &str) -> usize {
                 if let Some(c) = traverse(Direction::Down, (y, x), &engine) && is_number(c) {
                     println!("valid part number found to the bottom of ({}, {})", y, x);
                     part_numbers.insert(get_num((&(y + 1), &x), &engine));
+                }
+                if let Some(c) = traverse(Direction::UpLeft, (y, x), &engine) && is_number(c) {
+                    println!("valid part number found to the top-left of ({}, {})", y, x);
+                    part_numbers.insert(get_num((&(y - 1), &(x - 1)), &engine));
+                }
+                if let Some(c) = traverse(Direction::UpRight, (y, x), &engine) && is_number(c) {
+                    println!("valid part number found to the top-right of ({}, {})", y, x);
+                    part_numbers.insert(get_num((&(y - 1), &(x + 1)), &engine));
+                }
+                if let Some(c) = traverse(Direction::DownLeft, (y, x), &engine) && is_number(c) {
+                    println!("valid part number found to the bottom-left of ({}, {})", y, x);
+                    part_numbers.insert(get_num((&(y + 1), &(x - 1)), &engine));
+                }
+                if let Some(c) = traverse(Direction::DownRight, (y, x), &engine) && is_number(c) {
+                    println!("valid part number found to the bottom-right of ({}, {})", y, x);
+                    part_numbers.insert(get_num((&(y + 1), &(x + 1)), &engine));
                 }
             }
         }
