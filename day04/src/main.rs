@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 fn main() {
     let input = include_str!("../rsrc/input.txt");
     println!("Answer to part 1: {}", part1(input));
@@ -5,7 +6,24 @@ fn main() {
 }
 
 fn part1(input: &str) -> usize {
-    0
+    let mut sum = 0;
+    for card in input.lines() {
+        let (w, m) = card.split_once(':').unwrap().1.split_once('|').unwrap();
+        let mut winning: HashSet<usize> = HashSet::new();
+        let mut mine: HashSet<usize> = HashSet::new();
+        for x in w.split(' ') {
+            if let Ok(num) = x.parse::<usize>() {
+                winning.insert(num);
+            }
+        }
+        for x in m.split(' ') {
+            if let Ok(num) = x.parse::<usize>() {
+                mine.insert(num);
+            }
+        }
+        sum += (1 << (winning.intersection(&mine).count())) >> 1;
+    }
+    sum
 }
 
 #[cfg(test)]
